@@ -1,0 +1,20 @@
+{
+  "name": "bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "serve": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "Adib",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/rest": "^0.4.1",
+    "canvas": "^2.9.1",
+    "discord-tictactoe": "^3.0.0",
+    "dotenv": "^16.0.1",
+    "mathjs": "^10.6.1",
+    "request-promise-native": "^1.0.9"
+  }
+}
