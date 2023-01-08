@@ -4,6 +4,13 @@ const {get} = require("request-promise-native");
 const letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
 let minletters = 4
 
+
+function arrayRemove(arr, value) { 
+    return arr.filter(function(ele){ 
+        return ele != value; 
+    });
+}
+
 async function checkWord(word) {
     let result = {
         url: "https://en.wiktionary.org/w/api.php?action=parse&page="+word.toLowerCase()+"&prop=wikitext&format=json",
@@ -19,8 +26,8 @@ function increaseMinletter(){
 }
 
 function nextPlayer(players, currentplayer){
-    let np = null;
     const n = players.indexOf(currentplayer);
+    let np = players[n+1]
     if(players.length === n+1) np = players[0];
     if(n+1 > players.length) np = players[n+1];
     return np;
@@ -33,7 +40,7 @@ function start(interaction, currentplayer, startletter, minletters, players, dur
     .setDescription('Send a message with an English word following the criteria:')
     .addFields([{name:'Starting Letter:', value:startletter}, {name:'Minimum Word Length:', value:""+minletters}, {name:'Time Left:' , value:`${timeleft-Math.floor((Date.now() / 1000))} Seconds`}])
     .setColor("#ffbf00")
-    interaction.followUp({embeds: [embed]})
+    interaction.followUp({content:`<@${currentplayer}>`, embeds: [embed]})
 
     const filter = m => m.author.id==currentplayer;
     const collector = interaction.channel.createMessageCollector({filter, time: 30_000 });
@@ -78,14 +85,36 @@ collector.on('end', (collected, reason) => {
     console.log(reason)
 	if(reason && reason==="correct") {
         const duration = 30
-    return start(interaction, currentplayer, startletter, minletters, players, duration)
+        const nextplayer = nextPlayer(players, currentplayer)
+    return start(interaction, nextplayer, startletter, minletters, players, duration)
     }
     if(reason && reason==="time") {
+        if(players.length == 2) {
+            const nextplayer = nextPlayer(players, currentplayer)
+            const embed = new EmbedBuilder()
+            .setTitle("Time Out!")
+            .setDescription(`<@${currentplayer}> couldn't send a correct word within time.`)
+            .addFields([{name: "Eliminated Player:", value:`<@${currentplayer}>`}, {name: "Next Player:", value: `<@${nextplayer}>`}])
+            interaction.channel.send({embeds: [embed]})
+
+            var result = arrayRemove(players, currentplayer);
+            players = result;
+            const embed2 = new EmbedBuilder()
+            .setTitle("Game Over!")
+            .setDescription(`Congrats! We have a winner!`)
+            .addFields([{name: "Winner:", value:`<@${players[0]}>`}])
+            return interaction.channel.send({embeds: [embed2]})
+        }
+        const nextplayer = nextPlayer(players, currentplayer)
         const embed = new EmbedBuilder()
         .setTitle("Time Out!")
         .setDescription(`<@${currentplayer}> couldn't send a correct word within time.`)
-        .addFields([{name: "Eliminated Player:", value:`<@${currentplayer}>`}, {name: "Next Player:", value: ".."}])
-        return interaction.channel.send({embeds: [embed]})
+        .addFields([{name: "Eliminated Player:", value:`<@${currentplayer}>`}, {name: "Next Player:", value: `<@${nextplayer}>`}])
+        interaction.channel.send({embeds: [embed]})
+        var result = arrayRemove(players, currentplayer);
+        players = result;
+        return start(interaction, nextplayer, startletter, minletters, players, duration)
+
     }
 });
 }
@@ -124,7 +153,7 @@ collector.on('collect', i => {
     }
 })
 collector.on('end', collected => {
-    interaction.channel.send(`Total players: ${players.length}\nIDs: ${players.join(", ")}`)
+    interaction.channel.send(`Total players: ${players.length}\nIDs: <@${players.join(">, <@")}>`)
     let startletter = letters[Math.floor(Math.random()*letters.length)];
     let duration = 30
     start(interaction, players[0], startletter, minletters, players, duration)
