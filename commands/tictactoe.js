@@ -1,4 +1,4 @@
-const {SlashCommandBuilder} = require("@discordjs/builders");
+const {SlashCommandBuilder} = require("discord.js");
 const TicTacToe = require("discord-tictactoe");
 const game = new TicTacToe({language: "en"});
 

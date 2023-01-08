@@ -1,5 +1,4 @@
-const {SlashCommandBuilder} = require("@discordjs/builders");
-const {Discord, MessageEmbed} = require("discord.js");
+const {Discord, EmbedBuilder, SlashCommandBuilder} = require("discord.js");
 const math = require("mathjs");
 
 
@@ -19,9 +18,8 @@ module.exports.run = async(client,interaction,options) => {
         resp = "Math ERROR"
       throw e;
     }
-    const embed = new MessageEmbed()
-    .addField('Input','```'+inputs+'```')
-    .addField('Output',"```"+resp+"```")
+    const embed = new EmbedBuilder()
+    .addFields([{name:'Input', value:'```'+inputs+'```'}, {name: 'Output', value:"```"+resp+"```"}])
     .setColor("#ffbf00")
 
     interaction.editReply({embeds:[embed]})

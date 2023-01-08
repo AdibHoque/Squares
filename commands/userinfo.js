@@ -1,5 +1,5 @@
-const {SlashCommandBuilder} = require("@discordjs/builders");
-const {MessageEmbed, UserFlags} = require("discord.js");
+const {SlashCommandBuilder} = require("discord.js");
+const {EmbedBuilder, UserFlags} = require("discord.js");
 
 module.exports.data = new SlashCommandBuilder()
 .setName("userinfo")
@@ -19,7 +19,7 @@ module.exports.run = async(client,interaction,options) => {
     const flagarr = new UserFlags(flags).toArray()
 
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
     .setAuthor(`${person.username}#${person.discriminator}`,person.avatarURL({ format: 'png', dynamic: true, size: 256 }))
     .setThumbnail(person.avatarURL({ format: 'png', dynamic: true, size: 512 }))
     .addField("Registered", person.createdAt.toLocaleString(), true)

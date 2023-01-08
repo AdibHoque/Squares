@@ -1,5 +1,5 @@
-const {SlashCommandBuilder} = require("@discordjs/builders");
-const {MessageEmbed} = require("discord.js");
+const {SlashCommandBuilder} = require("discord.js");
+const {EmbedBuilder} = require("discord.js");
 
 module.exports.data = new SlashCommandBuilder()
 .setName("roleinfo")
@@ -16,17 +16,9 @@ module.exports.run = async(client,interaction,options) => {
 
     console.log(role.createdAt)
     
-    const embed = new MessageEmbed()
-    .addField("ID",role.id,true)
-    .addField("Name",role.name,true)
-    .addField("Color", color, true)
-    .addField("Created At", role.createdAt.toLocaleString(), true)
-    .addField("Hoisted",hoisted ,true)
-    .addField("Position",position ,true)
-    .addField("Mention",`<@&${role.id}>`,true)
-    .addField("Mentionable",mention ,true)
+    const embed = new EmbedBuilder()
+    .addFields([{name: "ID", value: role.id}, {name: "Name", value: role.name}, {name: "Color", value: color}, {name: "Created At", value:role.createdAt.toLocaleString()}, {name: "Hoisted", value: hoisted}, {name: "Position", value: position}, {name: "Mention", value: `<@&${role.id}>`}, {name: "Mentionable", value: mention}])
     .setColor(`#ffbf00`)
-
     interaction.editReply({embeds: [embed]});
 
 }

@@ -1,5 +1,5 @@
-const {SlashCommandBuilder} = require("@discordjs/builders");
-const {Discord, MessageEmbed, MessageAttachment} = require("discord.js");
+const {SlashCommandBuilder} = require("discord.js");
+const {Discord, EmbedBuilder, AttachmentBuilder} = require("discord.js");
 const Canvas = require("canvas");
 
 
@@ -18,12 +18,12 @@ module.exports.run = async(client,interaction,options) => {
     ctx.fillStyle = hex;
     ctx.fillRect(0, 00, 300, 200);
 
-    const attachment = new MessageAttachment(canvas.toBuffer(),'color.png'); 
+    const attachment = new AttachmentBuilder(canvas.toBuffer(),'color.png'); 
 
-    const embed = new MessageEmbed()
-    .setTitle(hex)
+    const embed = new EmbedBuilder()
+    .setTitle(hex.toUpperCase())
     .setColor(hex)
-    .setImage('attachment://color.png');
+    .setImage('attachment://color.png')
 
     interaction.editReply({embeds:[embed], files: [attachment]});
 }
