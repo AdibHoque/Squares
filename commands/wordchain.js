@@ -31,10 +31,15 @@ function nextPlayer(players, currentplayer){
     if(players.length === n+1) np = players[0];
     if(n+1 > players.length) np = players[n+1];
     return np;
-
 }
 
-function start(interaction, currentplayer, startletter, minletters, players, duration){
+function isLastPlayer(players, currentplayer){
+    const n = players.indexOf(currentplayer);
+    if(players.length === n+1) return true;
+    else return false;
+}
+
+function start(interaction, currentplayer, startletter, minletters, players, duration, usedwords){
     let timeleft = Math.floor((Date.now() / 1000))+duration
     const embed = new EmbedBuilder()
     .setDescription('Send a message with an English word following the criteria:')
@@ -62,6 +67,13 @@ collector.on('collect', async m => {
     let word = m.content.trim().split(/ +/g);
     let words = word.join("");
     const w = await checkWord(words);
+    
+    if(usedwords.includes(words.toLowerCase())) {
+        const embed = new EmbedBuilder()
+        .setDescription(`__**${m.content.toUpperCase()}**__ is incorrect.\n**Reason:** Word has already been used once.`)
+        .addFields([{name:"Criteria:", value:`Minimum Characters: **${minletters}**\nStarting Letter: **${startletter}**`}, {name:"Time Left:", value:`${timeleft-Math.floor((Date.now() / 1000))} Seconds`}])
+    return m.reply({embeds: [embed]})
+    }
 
     if(w==false) {
         const embed = new EmbedBuilder()
@@ -71,6 +83,7 @@ collector.on('collect', async m => {
     }
 
     if(w==true) {
+        usedwords.push(words.toLowerCase())
         const embed = new EmbedBuilder()
         .setDescription(`__**${m.content.toUpperCase()}**__ is correct.`)
         startletter = m.content.toUpperCase().slice(-1);
@@ -86,7 +99,9 @@ collector.on('end', (collected, reason) => {
 	if(reason && reason==="correct") {
         const duration = 30
         const nextplayer = nextPlayer(players, currentplayer)
-    return start(interaction, nextplayer, startletter, minletters, players, duration)
+        const endOfRound = isLastPlayer(players, currentplayer)
+        if(endOfRound && minletters < 11) minletters = minletters+1
+    return start(interaction, nextplayer, startletter, minletters, players, duration, usedwords)
     }
     if(reason && reason==="time") {
         if(players.length == 2) {
@@ -113,7 +128,7 @@ collector.on('end', (collected, reason) => {
         interaction.channel.send({embeds: [embed]})
         var result = arrayRemove(players, currentplayer);
         players = result;
-        return start(interaction, nextplayer, startletter, minletters, players, duration)
+        return start(interaction, nextplayer, startletter, minletters, players, duration, usedwords)
 
     }
 });
@@ -125,19 +140,20 @@ module.exports.data = new SlashCommandBuilder()
 
 module.exports.run = (client,interaction) => {
      let players = [];
+     let usedwords = [];
 
      const row = new ActionRowBuilder()
      .addComponents([new ButtonBuilder().setLabel("Yes! Join Game!").setStyle(1).setCustomId(`join`)])
      const embed = new EmbedBuilder()
      .setTitle("Join Wordchain Game!")
      .setDescription(`<@${interaction.user.id}> is starting a Wordchain game!\nYou may join to start playing together.`)
-     .addFields([{name: "How to join?", value: "Tap on the button below to join."}])
+     .addFields([{name: "How to join?", value: "Tap on the button below to join."}, {name: "Time left", value: "30 Seconds"}])
      .setColor("#ffbf00")
      interaction.editReply({embeds: [embed], components: [row]})
 
      players.push(interaction.user.id);
      const filter = i => i.customId == "join" 
-     const collector = interaction.channel.createMessageComponentCollector({filter, time: 15_000 });
+     const collector = interaction.channel.createMessageComponentCollector({filter, time: 30_000 });
 collector.on('collect', i => { 
     i.deferUpdate();
     if(players.includes(i.user.id)) {
@@ -153,10 +169,19 @@ collector.on('collect', i => {
     }
 })
 collector.on('end', collected => {
-    interaction.channel.send(`Total players: ${players.length}\nIDs: <@${players.join(">, <@")}>`)
+    if(!players[1]) {
+        const e = new EmbedBuilder().setTitle("The game has been disbanded.").setDescription("None joined within the time limit.")
+        return interaction.channel.send({ embeds: [e]}) 
+    }
+    let p = [];
+    players.forEach(r => {
+        p.push(`**${players.indexOf(r)+1}.** <@${r}>`)
+        })
+    const embed = new EmbedBuilder().setTitle("The game is about to start!").addFields([{name:"Participants:", value:p.join("\n")}]).setColor("#FFBF00")
+    interaction.channel.send({ embeds: [embed] })
     let startletter = letters[Math.floor(Math.random()*letters.length)];
     let duration = 30
-    start(interaction, players[0], startletter, minletters, players, duration)
+    start(interaction, players[0], startletter, minletters, players, duration, usedwords)
     console.log(`Collected ${collected.size} items`)
 });
 
