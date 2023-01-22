@@ -34,6 +34,6 @@ client.giveawaysManager
     interaction.editReply({embeds:[successEmbed('Giveaway has been forcefully ended!')]});
 })
 .catch((err) => {
-    interaction.editReply({embeds:errorEmbed[(`An error has occurred, please check and try again.\n\`${err}\``)]});
+    interaction.editReply({embeds:errorEmbed[(`${err}`)]});
 });
 }

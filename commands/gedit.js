@@ -41,10 +41,10 @@ module.exports.run = (client,interaction,options) => {
                 newPrize: prize
             })
             .then(() => {
-                interaction.editReply('Success! Giveaway updated!');
+                interaction.editReply({embeds:[successEmbed(`Giveaway was updated successfully!`)]});
             })
             .catch((err) => {
-                interaction.editReply(`An error has occurred, please check and try again.\n\`${err}\``);
+                interaction.editReply({embeds:[errorEmbed(`${err}`)]});
             });
 
 }

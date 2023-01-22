@@ -33,6 +33,8 @@ module.exports.run = (client,interaction,options) => {
 let member = options.getMember("person")
 let reason = options.getString("reason") ? options.get("reason") : "No reason specified."
 
+if(member.kickable()) member.send(`You were kicked from **${interaction.guild.name}** | ${reason}`);
+
 member.kick(reason).then(() => {
     interaction.editReply({embeds:[successEmbed(`${member.user.username}#${member.user.discriminator} was kicked.\n**Reason:** ${reason}`)]})
 }).catch(error => {
