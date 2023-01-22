@@ -45,7 +45,7 @@ let member = options.getMember("member")
 let reason = options.getString("reason") ? options.getString("reason") : "No reason specified."
 let duration = options.getInteger("duration") ? options.getInteger("duration") : 0;
 
-if(member.kickable()) member.send(`You were banned from **${interaction.guild.name}** | ${reason}`);
+if(member.bannable()) member.send(`You were banned from **${interaction.guild.name}** | ${reason}`);
 
 member.ban({days: duration, reason: `${reason} Moderator: ${interaction.user.username}#${interaction.user.discriminator}`}).then(() => {
     interaction.editReply({embeds:[successEmbed(`${member.user.username}#${member.user.discriminator} was banned.\n**Reason:** ${reason}`)]})
