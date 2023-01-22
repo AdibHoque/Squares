@@ -1,5 +1,13 @@
 const {SlashCommandBuilder} = require("discord.js");
-const {EmbedBuilder, UserFlags} = require("discord.js");
+const {EmbedBuilder, UserFlagsBitField} = require("discord.js");
+
+module.exports.help = {
+    name: "userinfo",
+    category: "General",
+    description: "Get information about a user.",
+    required: "None",
+    usage: "/userinfo <user>"
+}
 
 module.exports.data = new SlashCommandBuilder()
 .setName("userinfo")
@@ -15,20 +23,15 @@ module.exports.run = async(client,interaction,options) => {
         memberRoles.push(r.toString());
     })
 
-    const flags = person.flags.bitfield
-    const flagarr = new UserFlags(flags).toArray()
-
+    const flags = person.flags
+    const flagarr = new UserFlagsBitField(flags).toArray()
+    const badges = flagarr[0] ? flagarr.join(", ") : "None"
 
     const embed = new EmbedBuilder()
-    .setAuthor(`${person.username}#${person.discriminator}`,person.avatarURL({ format: 'png', dynamic: true, size: 256 }))
+    .setAuthor({name: `${person.username}#${person.discriminator}`, iconURL: person.avatarURL({ format: 'png', dynamic: true, size: 256 })})
     .setThumbnail(person.avatarURL({ format: 'png', dynamic: true, size: 512 }))
-    .addField("Registered", person.createdAt.toLocaleString(), true)
-    .addField("Joined At", member.joinedAt.toLocaleString(), true)
-    .addField("User ID", person.id, true)
-    .addField("Badges", flagarr.join(", "), true)
-    .addField("Avatar", `[128px](${person.avatarURL({ format: 'png', dynamic: true, size: 128 })}) [256px](${person.avatarURL({ format: 'png', dynamic: true, size: 256 })}) [512px](${person.avatarURL({ format: 'png', dynamic: true, size: 512 })})`, true)
-    .addField("Roles"+'['+memberRoles.length+']',memberRoles.join(", "))
-    .setColor(`#ffbf00`)
+    .addFields([{name: "Registered", value: person.createdAt.toLocaleString(), inline:true}, {name: "Joined At", value: member.joinedAt.toLocaleString(), inline:true}, {name: "User ID", value: person.id, inline:true}, {name: "Badges", value: badges, inline:true}, {name: "Avatar", value: `[128px](${person.avatarURL({ format: 'png', dynamic: true, size: 128 })}) [256px](${person.avatarURL({ format: 'png', dynamic: true, size: 256 })}) [512px](${person.avatarURL({ format: 'png', dynamic: true, size: 512 })})`, inline:true}, {name: "Roles"+'['+memberRoles.length+']', value: memberRoles.join(", "), inline:true}])
+    .setColor(`#FF9900`)
 
     interaction.editReply({embeds: [embed]});
 }

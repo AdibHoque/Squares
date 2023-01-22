@@ -7,6 +7,13 @@ module.exports.data = new SlashCommandBuilder()
 .setDescription("Evaluates your math inputs.")
 .addStringOption(option => option.setName("input").setDescription("The math input you want evaluation of.").setRequired(true))
 
+module.exports.help = {
+  name: "math",
+  category: "General",
+  description: "Evaluate mathematical inputs.",
+  required: "None",
+  usage: "/math <input>"
+}
 
 module.exports.run = async(client,interaction,options) => {
     let inputs = options.getString("input");
@@ -20,7 +27,7 @@ module.exports.run = async(client,interaction,options) => {
     }
     const embed = new EmbedBuilder()
     .addFields([{name:'Input', value:'```'+inputs+'```'}, {name: 'Output', value:"```"+resp+"```"}])
-    .setColor("#ffbf00")
+    .setColor("#FF9900")
 
     interaction.editReply({embeds:[embed]})
 }
