@@ -1,5 +1,7 @@
 const {SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits} = require("discord.js");
 const ms = require("ms");
+const uuid = require("shortid");
+const l = require("../models/log")
 
 function errorEmbed(text) {
     const embed = new EmbedBuilder().setDescription("<:Cross:1063031834713264128> "+text).setColor("#FF9900")
@@ -35,6 +37,14 @@ module.exports.run = (client,interaction,options) => {
 let member = options.getMember("member")
 let time = options.getString("time")
 let reason = options.getString("reason") ? options.getString("reason") : `No reason provided.`
+let guildid = interaction.guildId
+let userid = member.user.id
+let usertag = member.user.tag
+let modid = interaction.user.id 
+let modtag = interaction.user.tag
+let date = new Date().toUTCString()
+let type = "MUTE"
+let uid = uuid.generate().toUpperCase()
 
 let timeInMs;
 let text; 
@@ -47,8 +57,44 @@ try {
 
 member.timeout(timeInMs, `${reason} Moderator: ${interaction.user.username}#${interaction.user.discriminator}`).then(() => {
     interaction.editReply({embeds:[successEmbed(`<@${member.id}> was successfully muted.\n**Duration:** ${text}\n**Reason:** ${reason}`)]})
+    const embed = new EmbedBuilder().setTitle(`You were muted in ${interaction.guild.name}`).setDescription(`**Reason:** `+reason+`\n**Duration:** ${text}`).setColor("FF9900").setFooter({text: date})
+    member.send({embeds: [embed]}).catch(() => {
+        interaction.channel.send({embeds:[errorEmbed(`${usertag} has DMs disabled.\nCould not DM them about the Mute.`)]})
+    })
+    l.findOne({ GuildID: guildid, UserID: userid }, async (err, data) => {
+        if(err) throw err;
+        if(!data) {
+            data = new l({
+                GuildID: guildid,
+                UserID: userid,
+                Content: [{
+                    Type: type,
+                    UID: uid,
+                    Reason: reason+`\n**Duration:** ${text}`,
+                    Date: date,
+                    UserID: userid,
+                    UserTag: usertag,
+                    ModID: modid,
+                    ModTag: modtag
+                }]
+            })
+        } else {
+            const logobj = {
+                Type: type,
+                UID: uid,
+                Reason: reason+`\n**Duration:** ${text}`,
+                Date: date,
+                UserID: userid,
+                UserTag: usertag,
+                ModID: modid,
+                ModTag: modtag
+            }
+            data.Content.push(logobj)
+        }
+        data.save()
+    })
 }).catch(error => {
      console.log(error);
-     interaction.editReply({embeds:[errorEmbed("An unknown error occured! Please check if I have the required permissions to execute this command.")]})
+     return interaction.editReply({embeds:[errorEmbed("I cannot Mute this Member!\nPlease check if I have the required permissions to execute this command.")]})
 })
 }

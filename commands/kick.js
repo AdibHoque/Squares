@@ -31,9 +31,12 @@ module.exports.run = (client,interaction,options) => {
     if(!permissions.includes("KickMembers")) return interaction.editReply({embeds: [new EmbedBuilder().setDescription("<:Cross:1063031834713264128> You need the `KickMembers` permission to use this command.").setColor("#FF9900")]})
 
 let member = options.getMember("person")
-let reason = options.getString("reason") ? options.get("reason") : "No reason specified."
+let reason = options.getString("reason") ? options.getString("reason") : "No reason specified."
 
-if(member.kickable()) member.send(`You were kicked from **${interaction.guild.name}** | ${reason}`);
+if(member.kickable) {
+    const embed = new EmbedBuilder().setTitle(`You were kicked from ${interaction.guild.name}`).setDescription(reason).setColor("FF9900").setFooter({text: date})
+member.send({embeds: [embed]}).catch((err) => console.log(err))
+}
 
 member.kick(reason).then(() => {
     interaction.editReply({embeds:[successEmbed(`${member.user.username}#${member.user.discriminator} was kicked.\n**Reason:** ${reason}`)]})

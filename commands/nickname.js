@@ -32,12 +32,12 @@ module.exports.run = (client,interaction,options) => {
 let member = options.getMember("member")
 let nickname = options.getString("nickname")
 
-try {
-    member.setNickname(nickname);
-    return interaction.editReply({embeds:[successEmbed(`Successfully changed nickname of ${member.user.tag}!`)]})
-}
-catch {
-    return interaction.editReply({embeds:[errorEmbed(`An unknown error occured. Kindly chceck if I have enough permissions to execute this command`)]})
-}
+
+member.setNickname(nickname).then(() => {
+    interaction.editReply({embeds:[successEmbed(`Successfully changed nickname of ${member.user.tag}!`)]})
+}).catch(error => {
+     console.log(error);
+     interaction.editReply({embeds:[errorEmbed("An unknown error occured! Please check if i have enough permissions to execute this command")]})
+})
 
 }

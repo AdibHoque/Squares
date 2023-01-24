@@ -60,7 +60,7 @@ module.exports.run = (client,interaction,options) => {
             giveaway: "<:GiveawayEmoji:1066347988647161907> <:GiveawayEmoji:1066347988647161907> **GIVEAWAY** <:GiveawayEmoji:1066347988647161907> <:GiveawayEmoji:1066347988647161907>",
             giveawayEnded: "<:GiveawayEmoji:1066347988647161907> <:GiveawayEmoji:1066347988647161907> **GIVEAWAY ENDED** <:GiveawayEmoji:1066347988647161907> <:GiveawayEmoji:1066347988647161907>",
             inviteToParticipate: "React <:GiveawayEmoji:1066347988647161907> to participate!",
-            winMessage: {content: `Congratulations, {winners}! You won **{this.prize}**!`, embed: new EmbedBuilder().setDescription(`[Giveaway Link]({this.messageURL})`).setColor("#FF9900"), replyToGiveaway:true},
+            winMessage: {content: `Congratulations, {winners}! You won **{this.prize}**!`, replyToGiveaway:true},
             drawing: "Ends: {timestamp}",
             winners: 'Winners:',
             embedFooter: 'Winners: {this.winnerCount}',

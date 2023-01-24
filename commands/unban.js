@@ -1,4 +1,6 @@
 const {SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits} = require("discord.js");
+const uuid = require("shortid");
+const l = require("../models/log")
 
 function errorEmbed(text) {
     const embed = new EmbedBuilder().setDescription("<:Cross:1063031834713264128> "+text).setColor("#FF9900")
@@ -23,6 +25,7 @@ module.exports.data = new SlashCommandBuilder()
 .setDescription("Unban a banned member.")
 .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
 .addStringOption(option => option.setName("member").setDescription("User ID of the banned Member").setRequired(true))
+.addStringOption(option => option.setName("reason").setDescription("Reason for banning."))
 
 
 module.exports.run = (client,interaction,options) => {
@@ -31,16 +34,57 @@ module.exports.run = (client,interaction,options) => {
 
 let member = options.getString("member")
 
+let reason = options.getString("reason") ? options.getString("reason") : "No reason specified."
+let guildid = interaction.guildId
+let modid = interaction.user.id 
+let modtag = interaction.user.tag
+let date = new Date().toUTCString()
+let type = "UNBAN"
+let uid = uuid.generate().toUpperCase()
+
+let userid;
+let usertag;
+client.users.fetch(member).then(u => {
+    userid = u.id;
+    usertag = u.tag;
+}).catch((err) => console.log(err))
+
 interaction.guild.members.unban(member).then(() => {
     interaction.editReply({embeds:[successEmbed(`**<@${member}> was successfully unbanned.**`)]})
+    l.findOne({ GuildID: guildid, UserID: userid }, async (err, data) => {
+        if(err) throw err;
+        if(!data) {
+            data = new l({
+                GuildID: guildid,
+                UserID: userid,
+                Content: [{
+                    Type: type,
+                    UID: uid,
+                    Reason: reason,
+                    Date: date,
+                    UserID: userid,
+                    UserTag: usertag,
+                    ModID: modid,
+                    ModTag: modtag
+                }]
+            })
+        } else {
+            const logobj = {
+                Type: type,
+                UID: uid,
+                Reason: reason,
+                Date: date,
+                UserID: userid,
+                UserTag: usertag,
+                ModID: modid,
+                ModTag: modtag
+            }
+            data.Content.push(logobj)
+        }
+        data.save()
+    })
 }).catch(error => {
     console.log(error);
     return interaction.editReply({embeds:[errorEmbed("**Invalid Member ID.**")]})
 })
-
-
 }
-
-// guild.members.unban('84484653687267328')
-//   .then(user => console.log(`Unbanned ${user.username} from ${guild.name}`))
-//   .catch(console.error);
