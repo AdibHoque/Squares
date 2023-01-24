@@ -3,10 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "^16.15.0"
+  },
   "keywords": [],
   "author": "Adib",
   "license": "ISC",
   "scripts": {
+    "start": "node index.js",
     "devStart": "nodemon index.js"
   },
   "dependencies": {

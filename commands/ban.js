@@ -60,7 +60,7 @@ if(member.bannable) {
     const embed = new EmbedBuilder().setTitle(`You were banned from ${interaction.guild.name}`).setDescription(reason).setColor("FF9900").setFooter({text: date})
 member.send({embeds: [embed]}).catch((err) => {
     console.log(err)
-    interaction.channel.send({embeds:[errorEmbed(`${usertag} has DMs disabled.\nCould not DM them about the Mute.`)]})
+    interaction.channel.send({embeds:[errorEmbed(`${usertag} has DMs disabled.\nCould not DM them about the Ban.`)]})
 })
 }
 
