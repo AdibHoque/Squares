@@ -16,7 +16,7 @@ client.on("ready", () => {
     console.log("Bot is online")
     let commands = client.application.commands;
     client.user.setPresence({
-        activities: [{ name: `/help`, type: ActivityType.Playing }],
+        activities: [{ name: `/help | ${client.guilds.cache.size} Guilds`, type: ActivityType.Playing }],
         status: 'online',
       });
 });
