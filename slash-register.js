@@ -8,7 +8,7 @@ env.config();
 module.exports = (updateCommands) => {
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-const clientId = '686861151333515275';
+const clientId = process.env.CLIENTID
 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
