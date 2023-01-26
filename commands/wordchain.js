@@ -53,7 +53,7 @@ async function start(interaction, currentplayer, startletter, minletters, player
     interaction.followUp({content:`<@${currentplayer}>`, embeds: [embed]})
 
     const filter = m => m.author.id==currentplayer;
-    const collector = interaction.channel.createMessageCollector({filter, time: 30_000 });
+    const collector = interaction.channel.createMessageCollector({filter, time: duration });
 
 collector.on('collect', async m => {
     const wc = await db.get(`wc${interaction.channelId}`)
