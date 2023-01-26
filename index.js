@@ -160,7 +160,7 @@ const manager = new GiveawayManagerWithOwnDatabase(client, {
         lastChance: {
             enabled: true,
             content: '⚠️ **LAST CHANCE TO ENTER !** ⚠️',
-            threshold: 30000,
+            threshold: 20000,
             embedColor: '#FF0000'
         }
     }
