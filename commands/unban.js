@@ -1,6 +1,7 @@
 const {SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits} = require("discord.js");
 const uuid = require("shortid");
 const l = require("../models/log")
+const g = require("../models/guild")
 
 function errorEmbed(text) {
     const embed = new EmbedBuilder().setDescription("<:Cross:1063031834713264128> "+text).setColor("#FF9900")
@@ -9,6 +10,11 @@ function errorEmbed(text) {
 
 function successEmbed(text) {
     const embed = new EmbedBuilder().setDescription("<:Check:1063031741482291220> "+text).setColor("#FF9900")
+    return embed;
+}
+
+function logEmbed(title, membertag, memberid, modtag, modid, reason, uid){
+    const embed = new EmbedBuilder().setTitle(title).setColor("#FF9900").addFields([{name:`Member`, value:`${membertag} (${memberid})`}, {name:`Moderator`, value:`${modtag} (${modid})`}, {name:`Reason`, value:reason}]).setTimestamp().setFooter({text:`LOG ID: ${uid}`})
     return embed;
 }
 
@@ -82,6 +88,15 @@ interaction.guild.members.unban(member).then(() => {
             data.Content.push(logobj)
         }
         data.save()
+        g.findOne({GuildID: guildid}, async (err, data) => {
+            if(err) throw err;
+            if(!data) return;
+            if(!data.LogChannel) return;
+            const c = interaction.guild.channels.cache.get(data.LogChannel);
+            if(!c) return;
+        
+            c.send({embeds:[logEmbed("MEMBER UNBANNED", usertag, userid, modtag, modid, reason, uid)]})
+        })
     })
 }).catch(error => {
     console.log(error);

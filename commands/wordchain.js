@@ -50,10 +50,10 @@ async function start(interaction, currentplayer, startletter, minletters, player
     .setDescription('Send a message with an English word following the criteria:')
     .addFields([{name:'Starting Letter:', value:startletter}, {name:'Minimum Word Length:', value:""+minletters}, {name:'Time Left:' , value:`${timeleft-Math.floor((Date.now() / 1000))} Seconds`}])
     .setColor("#FF9900")
-    interaction.followUp({content:`<@${currentplayer}>`, embeds: [embed]})
+    await interaction.followUp({content:`<@${currentplayer}>`, embeds: [embed]})
 
     const filter = m => m.author.id==currentplayer;
-    const collector = interaction.channel.createMessageCollector({filter, time: duration });
+    const collector = interaction.channel.createMessageCollector({filter, time: duration*1000 });
 
 collector.on('collect', async m => {
     const wc = await db.get(`wc${interaction.channelId}`)
@@ -210,7 +210,7 @@ collector.on('end', async collected => {
         p.push(`**${players.indexOf(r)+1}.** <@${r}>`)
         })
     const embed = new EmbedBuilder().setTitle("The game is about to start!").addFields([{name:"Participants:", value:p.join("\n")}]).setColor("#FF9900")
-    interaction.channel.send({ embeds: [embed] })
+    await interaction.channel.send({ embeds: [embed] })
     let startletter = letters[Math.floor(Math.random()*letters.length)];
     let duration = 30
     start(interaction, players[0], startletter, minletters, players, duration)

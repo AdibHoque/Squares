@@ -19,6 +19,8 @@ module.exports.data = new SlashCommandBuilder()
 .addStringOption(option => option.setName("filter").setDescription("Filter out certain logs.").setChoices(
     { name: 'WARN', value: "WARN" },
     { name: 'MUTE', value: "MUTE" },
+    { name: 'UNMUTE', value: "UNMUTE" },
+    { name: 'KICK', value: "KICK" },
     { name: 'BAN', value: "BAN" },
     { name: 'UNBAN', value: "UNBAN" },
 ))
@@ -37,15 +39,15 @@ module.exports.run = async(client,interaction,options) => {
             let fields = []
             data.Content.forEach(d => {
                 if(d.Type == filter) fields.push({name: `${d.Type} [${d.UID}]`, value: `**Moderator:** ${d.ModTag} (${d.ModID})\n**Reason:** ${d.Reason}\n**Date:** ${d.Date}`})
-                if(!fields.length == 0) {
+            })
+            if(!fields.length == 0) {
                 const embed = new EmbedBuilder().setColor(`#FF9900`).setDescription(`**Filtered Logs:** ${filter}`).addFields(fields).setTimestamp().setAuthor({name:person.tag, iconURL:person.avatarURL()})
                 return interaction.editReply({embeds: [embed]});
                 }  
-                if(fields.length == 0) {
+            if(fields.length == 0) {
                 const embed = new EmbedBuilder().setColor(`#FF9900`).setDescription(`No \`${filter}\` logs found for this member.`)
                 return interaction.editReply({embeds: [embed]});
                 }
-            })
             } 
             else {
                 const embed = new EmbedBuilder().setColor(`#FF9900`).setDescription("No logs found for this member.")
@@ -61,9 +63,18 @@ module.exports.run = async(client,interaction,options) => {
         let fields = []
         data.Content.forEach(d => {
             fields.push({name: `${d.Type} [${d.UID}]`, value: `**Moderator:** ${d.ModTag} (${d.ModID})\n**Reason:** ${d.Reason}\n**Date:** ${d.Date}`})
-            const embed = new EmbedBuilder().setColor(`#FF9900`).addFields(fields).setTimestamp().setAuthor({name:person.tag, iconURL:person.avatarURL()})
-            interaction.editReply({embeds: [embed]});
-        })
+        })  
+        const embed = new EmbedBuilder().setColor(`#FF9900`).setTimestamp().setAuthor({name:person.tag, iconURL:person.avatarURL()})
+        if(fields.length == 0) {
+            const embed = new EmbedBuilder().setColor(`#FF9900`).setDescription("No logs found for this member.")
+            return interaction.editReply({embeds: [embed]});
+        }
+        if(fields.length > 25) {
+            fields.splice(25, fields.length-25)
+            embed.setDescription("This member has over 25 logs, kindly delete older logs using \`/deletelog\` to see newer logs as maximum logs this coammnd will show is 25.")
+        }
+            embed.addFields(fields)
+            interaction.editReply({embeds: [embed]});       
         } else {
             const embed = new EmbedBuilder().setColor(`#FF9900`).setDescription("No logs found for this member.")
             interaction.editReply({embeds: [embed]});

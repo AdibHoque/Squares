@@ -1,6 +1,10 @@
 const {SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits} = require("discord.js");
-const uuid = require("shortid");
 const l = require("../models/log")
+
+function isValidURL(string) {
+    var res = string.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+    return (res !== null)
+  };
 
 function errorEmbed(text) {
     const embed = new EmbedBuilder().setDescription("<:Cross:1063031834713264128> "+text).setColor("#FF9900")
@@ -12,26 +16,17 @@ function successEmbed(text) {
     return embed;
 }
 
-function removeObjectWithId(arr, id) {
-    const objWithIdIndex = arr.findIndex((obj) => obj.UID == id);
-  
-    if (objWithIdIndex > -1) {
-      arr.splice(objWithIdIndex, 1);
-    }
-    return arr;
-  }
-
 module.exports.help = {
-    name: "deletelog",
+    name: "loginfo",
     category: "Moderationn",
-    description: "Delete a single log using the LOG ID.",
+    description: "Log information with the attachment evidence, if any.",
     required: "MODERATE_MEMBERS",
-    usage: "/deletelog <Log ID>"
+    usage: "/loginfo <Log ID>"
 }
 
 module.exports.data = new SlashCommandBuilder()
-.setName("deletelog")
-.setDescription("Delete a single log using the LOG ID")
+.setName("loginfo")
+.setDescription("Log information with the attachment evidence, if any.")
 .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
 .addStringOption(option => option.setName("log_id").setDescription("The ID of the Log.").setRequired(true))
 
@@ -48,10 +43,11 @@ l.findOne({ GuildID: guildid, "Content.UID": logID}, async (err, data) => {
     if(!data) {
         return interaction.editReply({embeds:[errorEmbed(`Could not find a valid log with that ID!`)]})
     } else {
-        const newContent = removeObjectWithId(data.Content, logID);
-        data.Content = newContent
-        data.save()
-        interaction.editReply({embeds:[successEmbed(`${logID} was successfully deleted!`)]})
+        let d = data.Content.find(o => o.UID === logID)
+        let fields = [{name: `${d.Type} [${d.UID}]`, value: `**Member:** ${d.UserTag} (${d.UserID})\n**Moderator:** ${d.ModTag} (${d.ModID})\n**Reason:** ${d.Reason}`}]
+        const embed = new EmbedBuilder().setColor(`#FF9900`).addFields(fields).setFooter({text: d.Date})
+        if(isValidURL(d.Proof)) embed.setImage(d.Proof)
+        interaction.editReply({embeds:[embed]})
     } 
 })
 

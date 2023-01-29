@@ -1,10 +1,12 @@
-const { Client, GatewayIntentBits, Partials, ActivityType, EmbedBuilder } = require('discord.js');
+const { Client, GatewayIntentBits, Partials, ActivityType, EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
+const g = require("./models/guild")
 const env = require('dotenv');
 env.config()
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent], partials: [Partials.Channel] });
 
 const mongoose = require('mongoose');
+mongoose.set('strictQuery', false);
 mongoose.connect(process.env.MONGOTOKEN);
 const db = mongoose.connection;
 
@@ -15,10 +17,12 @@ let commands = require("./slash-register").commands;
 client.on("ready", () => {
     console.log("Bot is online")
     let commands = client.application.commands;
+    setInterval(() => {
     client.user.setPresence({
         activities: [{ name: `/help | ${client.guilds.cache.size} Guilds`, type: ActivityType.Playing }],
         status: 'online',
       });
+    }, 60000);
 });
 
 client.on("error", e => {
@@ -43,6 +47,36 @@ client.on('interactionCreate', async interaction => {
 
     commandMethod.run(client, interaction, options)
     }
+})
+
+client.on("messageDelete", message => {
+    if(message.author.bot) return;
+    g.findOne({GuildID: message.guild.id}, async (err, data) => {
+        if(err) throw err;
+        if(!data) return;
+        if(!data.MsgLogChannel) return;
+        const c = message.guild.channels.cache.get(data.MsgLogChannel);
+        if(!c) return;
+    
+    const embed = new EmbedBuilder().setTitle(`MESSAGE DELETED`).addFields([{name:"Content", value:message.content}, {name:`Author`, value:message.author.tag+" ("+message.author.id+")"}, {name:`Channel`, value:"<#"+message.channel.id+">"}]).setThumbnail(message.guild.iconURL({ format: 'png', dynamic: true, size: 512 })).setTimestamp().setFooter({text:`MESSAGE DELETED`}).setColor(`#FF9900`)
+  c.send({embeds:[embed]})
+  })
+})
+
+client.on("messageUpdate", (oldMessage, newMessage) => {
+    let message = oldMessage;
+    if(message.author.bot) return;
+    g.findOne({GuildID: message.guild.id}, async (err, data) => {
+        if(err) throw err;
+        if(!data) return;
+        if(!data.MsgLogChannel) return;
+        const c = message.guild.channels.cache.get(data.MsgLogChannel);
+        if(!c) return;
+    
+    const embed = new EmbedBuilder().setTitle(`MESSAGE EDITED`).addFields([{name:`Author`, value:message.author.tag+" ("+message.author.id+")"}, {name:"Before", value:message.content}, {name:"After", value:newMessage.content},   {name:`Message Channel`, value:"<#"+message.channel.id+">"}]).setThumbnail(message.guild.iconURL({ format: 'png', dynamic: true, size: 512 })).setTimestamp().setFooter({text:`MESSAGE DELETED`}).setColor(`#FF9900`)
+    const row = new ActionRowBuilder().addComponents([new ButtonBuilder().setLabel("Jump to message").setStyle(5).setURL(`https://discordapp.com/channels/${message.guild.id}/${message.channel.id}/${message.id}`)])
+    c.send({embeds:[embed], components: [row]})
+  })
 })
 
 
