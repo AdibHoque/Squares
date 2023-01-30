@@ -42,7 +42,7 @@ module.exports.run = (client,interaction,options) => {
     .setTitle(`<:Commands:1066347425465380924> HELP MENU`)
     .setDescription(`To get detailed help on a command, use \`/help <command name>\`!`)
     .setThumbnail("https://cdn.discordapp.com/attachments/678539559570767872/1063130454930239489/20230112_222006.gif")
-    .addFields([{name: "General", value:"`ping`, `avatar`, `define`, `color`, `math`, `winratecalc`, `userinfo`, `serverinfo`, `roleinfo`"}, {name: "Moderation", value:"`warn`, `mute`, `unmute`, `kick`, `ban`, `unban`, `logs`, `loginfo`, `deletelog`, `clearlogs`, `nickname`, `resetnick`, `role`, `embed`"}, {name: "Entertainment", value:"`wordchain`, `tictactoe`"}, {name: "Giveaway", value:"`gstart`, `greroll`, `gend`, `gedit`, `gdelete`\n\n<:Plus:1063031875360280646> [Add BOT](https://discord.com/api/oauth2/authorize?client_id=629323586930212884&permissions=1513376050423&scope=bot%20applications.commands) | [Support Server](https://discord.gg/RDKvzEytHr)"}])
+    .addFields([{name: "General", value:"`ping`, `avatar`, `define`, `color`, `math`, `winratecalc`, `userinfo`, `serverinfo`, `roleinfo`, `botinfo`"}, {name: "Moderation", value:"`warn`, `mute`, `unmute`, `kick`, `ban`, `unban`, `logs`, `loginfo`, `deletelog`, `clearlogs`, `nickname`, `resetnick`, `role`, `embed`"}, {name: "Entertainment", value:"`wordchain`, `tictactoe`"}, {name: "Giveaway", value:"`gstart`, `greroll`, `gend`, `gedit`, `gdelete`\n\n<:Plus:1063031875360280646> [Add BOT](https://discord.com/api/oauth2/authorize?client_id=629323586930212884&permissions=1513376050423&scope=bot%20applications.commands) | [Support Server](https://discord.gg/RDKvzEytHr)"}])
     .setColor(`#FF9900`)
 
     interaction.editReply({embeds: [embed]});
