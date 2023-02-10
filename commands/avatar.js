@@ -3,7 +3,7 @@ const {EmbedBuilder} = require("discord.js");
 
 module.exports.help = {
     name: "avatar",
-    category: "General",
+    category: "Utility",
     description: "Enlarge user Avatar!",
     required: "None",
     usage: "/avatar [@user]"

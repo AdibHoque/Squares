@@ -2,7 +2,7 @@ const {SlashCommandBuilder, PermissionFlagsBits} = require("discord.js");
 
 module.exports.help = {
     name: "role",
-    category: "Moderationn",
+    category: "Moderation",
     description: "Toggle add or remove role from a Member.",
     required: "MANAGE_ROLES",
     usage: "/role <member ID or @member> <role>"

@@ -14,7 +14,7 @@ function successEmbed(text) {
 
 module.exports.help = {
     name: "config",
-    category: "Moderationn",
+    category: "Moderation",
     description: "Assign or change channels for certain tasks.",
     required: "MANAGE_CHANNELS",
     usage: "/config <option> <value>"

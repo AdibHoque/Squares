@@ -2,7 +2,7 @@ const {SlashCommandBuilder, EmbedBuilder} = require("discord.js");
 
 module.exports.help = {
     name: "ping",
-    category: "General",
+    category: "Utility",
     description: "Check bot ping latency!",
     required: "None",
     usage: "/ping"

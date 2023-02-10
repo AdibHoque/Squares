@@ -18,7 +18,7 @@ function successEmbed(text) {
 
 module.exports.help = {
     name: "loginfo",
-    category: "Moderationn",
+    category: "Moderation",
     description: "Log information with the attachment evidence, if any.",
     required: "MODERATE_MEMBERS",
     usage: "/loginfo <Log ID>"

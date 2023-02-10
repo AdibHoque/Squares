@@ -3,7 +3,7 @@ const {EmbedBuilder} = require("discord.js");
 
 module.exports.help = {
     name: "serverinfo",
-    category: "General",
+    category: "Utility",
     description: "Get information about the server.",
     required: "None",
     usage: "/serverinfo"

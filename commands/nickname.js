@@ -19,7 +19,7 @@ module.exports.data = new SlashCommandBuilder()
 
 module.exports.help = {
     name: "nickname",
-    category: "Moderationn",
+    category: "Moderation",
     description: "Change a members nickname.",
     required: "MANAGE_NICKNAMES",
     usage: "/nickname <member ID or @member> <nickname>"

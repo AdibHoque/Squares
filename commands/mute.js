@@ -27,7 +27,7 @@ function logEmbed(title, membertag, memberid, modtag, modid, reason, duration, u
 
 module.exports.help = {
     name: "mute",
-    category: "Moderationn",
+    category: "Moderation",
     description: "Mute a member.",
     required: "MODERATE_MEMBERS",
     usage: "/mute <member ID or @member>"

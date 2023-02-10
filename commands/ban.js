@@ -25,7 +25,7 @@ function logEmbed(title, membertag, memberid, modtag, modid, reason, uid, proof)
 
 module.exports.help = {
     name: "ban",
-    category: "Moderationn",
+    category: "Moderation",
     description: "Ban a member from the server",
     required: "BAN_MEMBERS",
     usage: "/ban <member ID or @member>"

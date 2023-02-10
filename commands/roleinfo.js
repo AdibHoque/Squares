@@ -3,7 +3,7 @@ const {EmbedBuilder} = require("discord.js");
 
 module.exports.help = {
     name: "roleinfo",
-    category: "General",
+    category: "Utility",
     description: "Get information about a role.",
     required: "None",
     usage: "/roleinfo <role>"

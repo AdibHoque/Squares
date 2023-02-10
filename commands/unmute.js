@@ -20,7 +20,7 @@ function logEmbed(title, membertag, memberid, modtag, modid, reason, uid){
 
 module.exports.help = {
     name: "unmute",
-    category: "Moderationn",
+    category: "Moderation",
     description: "Unmute a previously muted member.",
     required: "MODERATE_MEMBERS",
     usage: "/unmute <member ID or @member>"

@@ -18,7 +18,7 @@ module.exports.data = new SlashCommandBuilder()
 
 module.exports.help = {
     name: "resetnick",
-    category: "Moderationn",
+    category: "Moderation",
     description: "Reset a members nickname.",
     required: "MANAGE_NICKNAMES",
     usage: "/resetnick <member ID or @member>"

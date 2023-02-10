@@ -27,7 +27,7 @@ function logEmbed(title, membertag, memberid, modtag, modid, reason, uid, proof)
 
 module.exports.help = {
     name: "warn",
-    category: "Moderationn",
+    category: "Moderation",
     description: "Warn a member for rules violation.",
     required: "MODERATE_MEMBERS",
     usage: "/warn <member ID or @member> <Reason>"

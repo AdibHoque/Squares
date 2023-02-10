@@ -13,7 +13,7 @@ function successEmbed(text) {
 
 module.exports.help = {
     name: "clearlogs",
-    category: "Moderationn",
+    category: "Moderation",
     description: "Mass delete a members logs, oldest to newest sequence.",
     required: "MODERATE_MEMBERS",
     usage: "/clearlogs <member> [Amount]"

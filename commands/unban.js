@@ -20,7 +20,7 @@ function logEmbed(title, membertag, memberid, modtag, modid, reason, uid){
 
 module.exports.help = {
     name: "unban",
-    category: "Moderationn",
+    category: "Moderation",
     description: "Unban a member.",
     required: "BAN_MEMBERS",
     usage: "/unban <member ID>"

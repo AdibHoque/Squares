@@ -5,7 +5,7 @@ var regex = /\b[0-9A-Fa-f]{6}\b/gi;
 
 module.exports.help = {
     name: "color",
-    category: "General",
+    category: "Utility",
     description: "Get visual color image from an HEX code.",
     required: "None",
     usage: "/color <HEX code>"

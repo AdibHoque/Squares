@@ -9,7 +9,7 @@ module.exports.data = new SlashCommandBuilder()
 
 module.exports.help = {
   name: "math",
-  category: "General",
+  category: "Utility",
   description: "Evaluate mathematical inputs.",
   required: "None",
   usage: "/math <input>"

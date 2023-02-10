@@ -5,7 +5,7 @@ var Filter = require('bad-words-plus');
 
 module.exports.help = {
     name: "define",
-    category: "General",
+    category: "Utility",
     description: "Get word definition from Urban Dictionary",
     required: "None",
     usage: "/define <word>"

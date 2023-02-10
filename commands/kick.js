@@ -26,7 +26,7 @@ function logEmbed(title, membertag, memberid, modtag, modid, reason, uid, proof)
 
 module.exports.help = {
     name: "kick",
-    category: "Moderationn",
+    category: "Moderation",
     description: "Kick a member from the server",
     required: "KICK_MEMBERS",
     usage: "/kick <member ID or @member>"

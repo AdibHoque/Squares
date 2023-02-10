@@ -3,7 +3,7 @@ const {Discord, EmbedBuilder, MessageAttachment} = require("discord.js");
 
 module.exports.help = {
     name: "winratecalc",
-    category: "General",
+    category: "Utility",
     description: "Calculate how many wins you need for reaching a certain Winrate.",
     required: "None",
     usage: "/winratecalc <current winrate> <total matches> <desired winrate>"

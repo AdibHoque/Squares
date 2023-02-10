@@ -14,7 +14,7 @@ const perc = currentCPUUsage / total * 100;
 
 module.exports.help = {
     name: "botinfo",
-    category: "General",
+    category: "Utility",
     description: "Information about the Bot!",
     required: "None",
     usage: "/botinfo"

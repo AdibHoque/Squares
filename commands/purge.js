@@ -15,7 +15,7 @@ function successEmbed(text) {
 
 module.exports.help = {
     name: "purge",
-    category: "Moderationn",
+    category: "Moderation",
     description: "Bulk delete messages of a channel.",
     required: "MANAGE_MESSAGES",
     usage: "/purge <amount>"
