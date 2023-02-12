@@ -26,7 +26,7 @@ module.exports.data = new SlashCommandBuilder()
   );
 
 module.exports.run = (client, interaction, options) => {
-  let sub = options.getString("type") ? options.getString("type") : "joke";
+  let sub = options.getString("type") ? options.getString("type") : "jokes";
 
   RedditSimple.RandomPost(sub)
     .then((post) => {
@@ -36,13 +36,15 @@ module.exports.run = (client, interaction, options) => {
       const ups = post[0].data.ups;
       const downs = post[0].data.downs;
       const comments = post[0].data.num_comments;
+      const thumb = post[0].data.url;
 
       const embed = new EmbedBuilder()
         .setTitle(title)
         .setURL(permalink)
-        .setDescription(desc)
-        .setFooter(`👍 ${ups} | 💬 ${comments}`)
+        .setFooter({ text: `👍 ${ups} | 💬 ${comments}` })
         .setColor("#FF9900");
+      if (desc) embed.setDescription(desc);
+      if (thumb) embed.setImage(thumb);
       interaction.editReply({ embeds: [embed] });
     })
     .catch((e) => console.log(e));

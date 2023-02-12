@@ -54,6 +54,7 @@ module.exports.run = (client, interaction, options) => {
       const ups = post[0].data.ups;
       const downs = post[0].data.downs;
       const comments = post[0].data.num_comments;
+      const desc = post[0].data.selftext;
 
       const embed = new EmbedBuilder()
         .setTitle(title)
@@ -61,6 +62,7 @@ module.exports.run = (client, interaction, options) => {
         .setImage(thumb)
         .setFooter({ text: `👍 ${ups} | 💬 ${comments} - r/${sub}` })
         .setColor("#FF9900");
+      if (desc) embed.setDescription(desc);
       interaction.editReply({ embeds: [embed] });
     })
     .catch((e) => console.log(e));

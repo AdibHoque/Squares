@@ -140,9 +140,6 @@ client.on("messageUpdate", (oldMessage, newMessage) => {
 });
 
 client.on("guildMemberUpdate", (oldMember, newMember) => {
-  console.log("member update");
-  console.log(`${oldMember.roles.cache.size} - ${newMember.roles.cache.size}`);
-  console.log(`${oldMember.nickname} - ${newMember.nickname}`);
   if (oldMember.bot) return;
   g.findOne({ GuildID: oldMember.guild.id }, async (err, data) => {
     if (err) throw err;
@@ -159,7 +156,6 @@ client.on("guildMemberUpdate", (oldMember, newMember) => {
     newMember.roles.cache.forEach((r) => newMemberRoles.push(r.toString()));
 
     if (oldMember.roles.cache.size < newMember.roles.cache.size) {
-      console.log("role added");
       let newRole = [];
       newMemberRoles.forEach((r) => {
         if (!oldRoles.includes(r)) newRole.push(r);
@@ -189,7 +185,6 @@ client.on("guildMemberUpdate", (oldMember, newMember) => {
     }
 
     if (newMember.roles.cache.size < oldMember.roles.cache.size) {
-      console.log("role removed");
       let removedRole = [];
       oldRoles.forEach((r) => {
         if (!newMemberRoles.includes(r)) removedRole.push(r);
@@ -219,7 +214,6 @@ client.on("guildMemberUpdate", (oldMember, newMember) => {
     }
 
     if (!(oldMember.nickname === newMember.nickname)) {
-      console.log("nickname updated");
       const embed = new EmbedBuilder()
         .setAuthor({
           name: oldMember.user.tag,
