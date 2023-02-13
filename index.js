@@ -6,6 +6,7 @@ const {
   EmbedBuilder,
   ActionRowBuilder,
   ButtonBuilder,
+  WebhookClient,
 } = require("discord.js");
 const g = require("./models/guild");
 const env = require("dotenv");
@@ -60,6 +61,28 @@ process.on("warning", console.warn);
 client.on("interactionCreate", async (interaction) => {
   if (interaction.user.bot) return;
   if (interaction.isCommand()) {
+    const embed = new EmbedBuilder()
+      .setAuthor({
+        name: `${interaction.user.tag} (${interaction.user.id})`,
+        iconURL: interaction.user.avatarURL({
+          format: "png",
+          dynamic: true,
+          size: 256,
+        }),
+      })
+      .setDescription(`</${interaction.commandName}:${interaction.commandId}>`)
+      .setColor("#ff9900")
+      .setTimestamp();
+    if (interaction.guild) {
+      embed.setTitle(interaction.guild.name);
+      embed.setThumbnail(
+        interaction.guild.iconURL({ format: "png", dynamic: true, size: 256 })
+      );
+    }
+    const webhookClient = new WebhookClient({
+      url: process.env.WEBHOOK_USAGE,
+    });
+    webhookClient.send({ embeds: [embed] });
     await interaction.deferReply();
     let name = interaction.commandName;
     let options = interaction.options;
@@ -103,6 +126,7 @@ client.on("messageDelete", (message) => {
 client.on("messageUpdate", (oldMessage, newMessage) => {
   let message = oldMessage;
   if (message.author.bot) return;
+  if (oldMessage.content == newMessage.content) return;
   g.findOne({ GuildID: message.guild.id }, async (err, data) => {
     if (err) throw err;
     if (!data) return;
@@ -240,6 +264,58 @@ client.on("guildMemberUpdate", (oldMember, newMember) => {
       c.send({ embeds: [embed] });
     }
   });
+});
+
+client.on("guildCreate", (guild) => {
+  let fields = [
+    { name: "Owner ID", value: `${guild.ownerId}`, inline: true },
+    { name: "Members", value: `${guild.memberCount}`, inline: true },
+    {
+      name: "Boosts",
+      value: `${guild.premiumSubscriptionCount}`,
+      inline: true,
+    },
+    { name: "Channels", value: `${guild.channels.cache.size}`, inline: true },
+    { name: "Roles", value: `${guild.roles.cache.size}`, inline: true },
+    { name: "Emojis", value: `${guild.emojis.cache.size}`, inline: true },
+  ];
+  const embed = new EmbedBuilder()
+    .setAuthor({ name: `Guild Joined`, iconURL: client.user.avatarURL() })
+    .addFields(fields)
+    .setThumbnail(guild.iconURL())
+    .setColor(`#ff9900`)
+    .setFooter({
+      text: `Total Guilds: ${client.guilds.cache.size} | Total Users: ${client.users.cache.size}`,
+    });
+  if (guild.banner) embed.setImage(guild.bannerURL({ size: 1024 }));
+  const webhookClient = new WebhookClient({ url: process.env.WEBHOOK_ADDS });
+  webhookClient.send({ embeds: [embed] });
+});
+
+client.on("guildDelete", (guild) => {
+  let fields = [
+    { name: "Owner ID", value: `${guild.ownerId}`, inline: true },
+    { name: "Members", value: `${guild.memberCount}`, inline: true },
+    {
+      name: "Boosts",
+      value: `${guild.premiumSubscriptionCount}`,
+      inline: true,
+    },
+    { name: "Channels", value: `${guild.channels.cache.size}`, inline: true },
+    { name: "Roles", value: `${guild.roles.cache.size}`, inline: true },
+    { name: "Emojis", value: `${guild.emojis.cache.size}`, inline: true },
+  ];
+  const embed = new EmbedBuilder()
+    .setAuthor({ name: `Guild Joined`, iconURL: client.user.avatarURL() })
+    .addFields(fields)
+    .setThumbnail(guild.iconURL())
+    .setColor(`#ff9900`)
+    .setFooter({
+      text: `Total Guilds: ${client.guilds.cache.size} | Total Users: ${client.users.cache.size}`,
+    });
+  if (guild.banner) embed.setImage(guild.bannerURL({ size: 1024 }));
+  const webhookClient = new WebhookClient({ url: process.env.WEBHOOK_REMOVES });
+  webhookClient.send({ embeds: [embed] });
 });
 
 // Check the connection
