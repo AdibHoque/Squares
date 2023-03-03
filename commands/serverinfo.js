@@ -30,7 +30,7 @@ module.exports.run = async (client, interaction, options) => {
       iconURL: g.iconURL({ format: "png", dynamic: true, size: 256 }),
     })
     .setThumbnail(g.iconURL({ format: "png", dynamic: true, size: 512 }))
-    .setColor(`#FF9900`)
+    .setColor(`#F3BA2F`)
     .addFields(fields)
     .setFooter({
       text: `ID: ${g.id} | Created: ${g.createdAt.toLocaleString()}`,

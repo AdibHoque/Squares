@@ -8,7 +8,7 @@ function capitalize(string) {
 function errorEmbed(text) {
   const embed = new EmbedBuilder()
     .setDescription("<:Cross:1063031834713264128> " + text)
-    .setColor("#FF9900");
+    .setColor("#F3BA2F");
   return embed;
 }
 
@@ -74,14 +74,14 @@ module.exports.run = (client, interaction, options) => {
               inline: true,
             },
           ])
-          .setColor("#FF9900")
+          .setColor("#F3BA2F")
           .setFooter({ text: "Parameter [] = Optional | <> = Required" }),
       ],
     });
   }
 
   const embed = new EmbedBuilder()
-    .setAuthor({ name: "ELECTRON" })
+    .setAuthor({ name: "SQUARES" })
     .setTitle(`<:Commands:1066347425465380924> HELP MENU`)
     .setDescription(
       `To get detailed help on a command, use \`/help <command name>\`!`
@@ -110,7 +110,7 @@ module.exports.run = (client, interaction, options) => {
           "`gstart`, `greroll`, `gend`, `gedit`, `gdelete`\n\n<:Plus:1063031875360280646> [Add BOT](https://discord.com/api/oauth2/authorize?client_id=629323586930212884&permissions=1513376050423&scope=bot%20applications.commands) | [Support Server](https://discord.gg/RDKvzEytHr)",
       },
     ])
-    .setColor(`#FF9900`);
+    .setColor(`#F3BA2F`);
 
   interaction.editReply({ embeds: [embed] });
 };

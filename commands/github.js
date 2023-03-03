@@ -4,7 +4,7 @@ const { get } = require("request-promise-native");
 function errorEmbed(text) {
   const embed = new EmbedBuilder()
     .setDescription("<:Cross:1063031834713264128> " + text)
-    .setColor("#FF9900");
+    .setColor("#F3BA2F");
   return embed;
 }
 
@@ -86,7 +86,7 @@ module.exports.run = async (client, interaction, options) => {
             },
             { name: "License", value: body.license.name, inline: true },
           ])
-          .setColor("#FF9900")
+          .setColor("#F3BA2F")
           .setFooter({
             text: `Created on ` + new Date(body.created_at).toUTCString(),
           });
@@ -174,7 +174,7 @@ module.exports.run = async (client, interaction, options) => {
         const embed = new EmbedBuilder()
           .setAuthor({ name: body.login, iconURL: body.avatar_url })
           .addFields(fields)
-          .setColor("#FF9900")
+          .setColor("#F3BA2F")
           .setFooter({
             text: `Registered on ` + new Date(body.created_at).toUTCString(),
           });

@@ -61,7 +61,7 @@ module.exports.run = (client, interaction, options) => {
         .setURL(permalink)
         .setImage(thumb)
         .setFooter({ text: `👍 ${ups} | 💬 ${comments} - r/${sub}` })
-        .setColor("#FF9900");
+        .setColor("#F3BA2F");
       if (desc) embed.setDescription(desc);
       interaction.editReply({ embeds: [embed] });
     })

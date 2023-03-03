@@ -49,7 +49,7 @@ module.exports.run = (client, interaction, options) => {
   let question = options.getString("question");
   if (question.endsWith("?")) question = `${question}?`;
   const embed = new EmbedBuilder()
-    .setColor("#FF9900")
+    .setColor("#F3BA2F")
     .setDescription(responses.random());
   interaction.editReply({ content: `> ${question}`, embeds: [embed] });
 };

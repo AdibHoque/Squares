@@ -74,7 +74,7 @@ module.exports.run = async (client, interaction, options) => {
         inline: true,
       },
     ])
-    .setColor(`#FF9900`);
+    .setColor(`#F3BA2F`);
 
   interaction.editReply({ embeds: [embed] });
 };

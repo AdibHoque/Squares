@@ -42,7 +42,7 @@ module.exports.run = (client, interaction, options) => {
         .setTitle(title)
         .setURL(permalink)
         .setFooter({ text: `👍 ${ups} | 💬 ${comments}` })
-        .setColor("#FF9900");
+        .setColor("#F3BA2F");
       if (desc) embed.setDescription(desc);
       if (thumb) embed.setImage(thumb);
       interaction.editReply({ embeds: [embed] });
