@@ -7,7 +7,7 @@ function capitalize(string) {
 
 function errorEmbed(text) {
   const embed = new EmbedBuilder()
-    .setDescription("<:Cross:1063031834713264128> " + text)
+    .setDescription("<:Cross:1081542318462599168> " + text)
     .setColor("#F3BA2F");
   return embed;
 }
@@ -50,26 +50,26 @@ module.exports.run = (client, interaction, options) => {
           .setTitle(`<:Squares:1080890146766991460> COMMAND INFO`)
           .addFields([
             {
-              name: `<:Name:1066716238216187975> Name:`,
+              name: `<:Name:1081538183809998858> Name:`,
               value: "`" + capitalize(c.name) + "`",
               inline: true,
             },
             {
-              name: `<:Commands:1066347425465380924> Category:`,
+              name: `<:Commands:1081538288290119711> Category:`,
               value: "`" + c.category + "`",
               inline: true,
             },
             {
-              name: `<:Description:1066716273821622303> Description:`,
+              name: `<:Description:1081538229712474184> Description:`,
               value: "```" + c.description + "```",
             },
             {
-              name: `<:Permissions:1066716314946773062> Required Permissions:`,
+              name: `<:Moderation:1081537551401230406> Required Permissions:`,
               value: "`" + c.required + "`",
               inline: true,
             },
             {
-              name: `<:Usage:1066717996325814282> Usage:`,
+              name: `<:Usage:1081538135755870259> Usage:`,
               value: "`" + c.usage + "`",
               inline: true,
             },
@@ -87,23 +87,23 @@ module.exports.run = (client, interaction, options) => {
     )
     .addFields([
       {
-        name: "Utility",
+        name: "<:Utility:1081537632061882429> Utility",
         value:
           "`ping`, `avatar`, `define`, `color`, `math`, `winratecalc`, `userinfo`, `serverinfo`, `roleinfo`, `botinfo`, `github`",
       },
       {
-        name: "Moderation",
+        name: "<:Moderation:1081537551401230406> Moderation",
         value:
           "`warn`, `mute`, `unmute`, `kick`, `ban`, `unban`, `purge`, `logs`, `loginfo`, `deletelog`, `clearlogs`, `nickname`, `resetnick`, `role`, `embed`",
       },
       {
-        name: "Entertainment",
+        name: "<:Entertainment:1081537715788578866> Entertainment",
         value: "`wordchain`, `tictactoe`, `meme`, `joke`, `8ball`",
       },
       {
-        name: "Giveaway",
+        name: "<:Giveaway:1081537798424764476> Giveaway",
         value:
-          "`gstart`, `greroll`, `gend`, `gedit`, `gdelete`\n\n<:Plus:1063031875360280646> [Add BOT](https://discord.com/api/oauth2/authorize?client_id=629323586930212884&permissions=1513376050423&scope=bot%20applications.commands) | [Support Server](https://discord.gg/RDKvzEytHr)",
+          "`gstart`, `greroll`, `gend`, `gedit`, `gdelete`\n\n<:Invite:1081552291292794941> [Invite Squares](https://discord.com/api/oauth2/authorize?client_id=629323586930212884&permissions=1513376050423&scope=bot%20applications.commands) | [Support Server](https://discord.gg/RDKvzEytHr)",
       },
     ])
     .setColor(`#F3BA2F`);

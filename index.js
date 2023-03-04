@@ -71,7 +71,7 @@ client.on("interactionCreate", async (interaction) => {
         }),
       })
       .setDescription(`</${interaction.commandName}:${interaction.commandId}>`)
-      .setColor("#ff9900")
+      .setColor("#F3BA2F")
       .setTimestamp();
     if (interaction.guild) {
       embed.setTitle(interaction.guild.name);
@@ -118,7 +118,7 @@ client.on("messageDelete", (message) => {
       )
       .setTimestamp()
       .setFooter({ text: `MESSAGE DELETED` })
-      .setColor(`#FF9900`);
+      .setColor(`#F3BA2F`);
     c.send({ embeds: [embed] });
   });
 });
@@ -150,7 +150,7 @@ client.on("messageUpdate", (oldMessage, newMessage) => {
       )
       .setTimestamp()
       .setFooter({ text: `MESSAGE DELETED` })
-      .setColor(`#FF9900`);
+      .setColor(`#F3BA2F`);
     const row = new ActionRowBuilder().addComponents([
       new ButtonBuilder()
         .setLabel("Jump to message")
@@ -204,7 +204,7 @@ client.on("guildMemberUpdate", (oldMember, newMember) => {
         )
         .setTimestamp()
         .setFooter({ text: `ROLE ADDED` })
-        .setColor(`#FF9900`);
+        .setColor(`#F3BA2F`);
       c.send({ embeds: [embed] });
     }
 
@@ -233,7 +233,7 @@ client.on("guildMemberUpdate", (oldMember, newMember) => {
         )
         .setTimestamp()
         .setFooter({ text: `ROLE REMOVED` })
-        .setColor(`#FF9900`);
+        .setColor(`#F3BA2F`);
       c.send({ embeds: [embed] });
     }
 
@@ -260,7 +260,7 @@ client.on("guildMemberUpdate", (oldMember, newMember) => {
         )
         .setTimestamp()
         .setFooter({ text: `NICKNAME UPDATED` })
-        .setColor(`#FF9900`);
+        .setColor(`#F3BA2F`);
       c.send({ embeds: [embed] });
     }
   });
@@ -283,7 +283,7 @@ client.on("guildCreate", (guild) => {
     .setAuthor({ name: `Guild Joined`, iconURL: client.user.avatarURL() })
     .addFields(fields)
     .setThumbnail(guild.iconURL())
-    .setColor(`#ff9900`)
+    .setColor(`#F3BA2F`)
     .setFooter({
       text: `Total Guilds: ${client.guilds.cache.size} | Total Users: ${client.users.cache.size}`,
     });
@@ -309,7 +309,7 @@ client.on("guildDelete", (guild) => {
     .setAuthor({ name: `Guild Joined`, iconURL: client.user.avatarURL() })
     .addFields(fields)
     .setThumbnail(guild.iconURL())
-    .setColor(`#ff9900`)
+    .setColor(`#F3BA2F`)
     .setFooter({
       text: `Total Guilds: ${client.guilds.cache.size} | Total Users: ${client.users.cache.size}`,
     });
@@ -423,18 +423,11 @@ const GiveawayManagerWithOwnDatabase = class extends GiveawaysManager {
 
 // Create a new instance of your new class
 const manager = new GiveawayManagerWithOwnDatabase(client, {
-  forceUpdateEvery: 1000 * 60 * 60,
   default: {
     botsCanWin: false,
-    embedColor: "#FF9900",
-    embedColorEnd: "#FF9900",
-    reaction: "1066347988647161907",
-    lastChance: {
-      enabled: true,
-      content: "⚠️ **LAST CHANCE TO ENTER !** ⚠️",
-      threshold: 20000,
-      embedColor: "#FF0000",
-    },
+    embedColor: "#F3BA2F",
+    embedColorEnd: "#F3BA2F",
+    reaction: "1081537798424764476",
   },
 });
 // We now have a giveawaysManager property to access the manager everywhere!
@@ -446,11 +439,11 @@ client.giveawaysManager.on(
     member.send({
       embeds: [
         new EmbedBuilder()
-          .setTitle("<:Check:1063031741482291220> Giveaway Entry Confirmed")
+          .setTitle("<:Check:1081542275680698499> Giveaway Entry Confirmed")
           .setDescription(
-            `Your entry for [this giveaway](https://discord.com/channels/${giveaway.guildId}/${giveaway.channelId}/${giveaway.messageId}) has been confirmed.\n\n<:Plus:1063031875360280646> [Invite ELECTRON](https://discord.com/api/oauth2/authorize?client_id=629323586930212884&permissions=1513376050423&scope=bot%20applications.commands) to your server.`
+            `Your entry for [this giveaway](https://discord.com/channels/${giveaway.guildId}/${giveaway.channelId}/${giveaway.messageId}) has been confirmed.\n\n<:Invite:1081552291292794941> [Invite Squares](https://discord.com/api/oauth2/authorize?client_id=629323586930212884&permissions=1513376050423&scope=bot%20applications.commands) to your server.`
           )
-          .setColor("#FF9900"),
+          .setColor("#F3BA2F"),
       ],
     });
   }

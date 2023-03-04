@@ -44,7 +44,7 @@ module.exports.run = (client, interaction, options) => {
       embeds: [
         new EmbedBuilder()
           .setDescription(
-            "<:Cross:1063031834713264128> You need the `ManageMessages` permission to use this command."
+            "<:Cross:1081542318462599168> You need the `ManageMessages` permission to use this command."
           )
           .setColor("#F3BA2F"),
       ],

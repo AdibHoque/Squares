@@ -205,7 +205,7 @@ async function start(
       }
 
       if (w == true) {
-        m.react("1063031741482291220");
+        m.react("1081542275680698499");
         await db.push(
           `wc${interaction.channelId}.usedWords`,
           words.toLowerCase()
@@ -261,9 +261,7 @@ async function start(
             { name: "Winner:", value: `<@${players[0]}>` },
             { name: "Longest Word:", value: lw },
           ])
-          .setThumbnail(
-            "https://media.discordapp.net/attachments/656517276832366595/1065986660455682178/1674221332444.png"
-          )
+          .setThumbnail("https://i.imgur.com/ZegX8WR.png")
           .setColor("#F3BA2F");
         await db.delete(`wc${interaction.channelId}`);
         return interaction.channel.send({ embeds: [embed2] });
@@ -305,7 +303,7 @@ module.exports.run = async (client, interaction) => {
   if (wc && Date.now() - wc.lastUpdate < 35000) {
     const embed = new EmbedBuilder()
       .setDescription(
-        "<:Cross:1063031834713264128> **Wordchain is being played in this channel already.**"
+        "<:Cross:1081542318462599168> **Wordchain is being played in this channel already.**"
       )
       .setColor("#F3BA2F");
     return interaction.editReply({ embeds: [embed] });
@@ -380,7 +378,7 @@ module.exports.run = async (client, interaction) => {
       await db.delete(`wc${interaction.channelId}`);
       const e = new EmbedBuilder()
         .setDescription(
-          "<:Cross:1063031834713264128> **None joined within the time limit.**"
+          "<:Cross:1081542318462599168> **None joined within the time limit.**"
         )
         .setColor("#F3BA2F");
       return interaction.channel.send({ embeds: [e] });

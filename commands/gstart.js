@@ -7,14 +7,14 @@ const ms = require("ms");
 
 function errorEmbed(text) {
   const embed = new EmbedBuilder()
-    .setDescription("<:Cross:1063031834713264128> " + text)
+    .setDescription("<:Cross:1081542318462599168> " + text)
     .setColor("#F3BA2F");
   return embed;
 }
 
 function successEmbed(text) {
   const embed = new EmbedBuilder()
-    .setDescription("<:Check:1063031741482291220> " + text)
+    .setDescription("<:Check:1081542275680698499> " + text)
     .setColor("#F3BA2F");
   return embed;
 }
@@ -53,7 +53,7 @@ module.exports.data = new SlashCommandBuilder()
   .addChannelOption((option) =>
     option
       .setName("channel")
-      .setDescription("Leave Empty if you wanna host in current")
+      .setDescription("Leave Empty if you wanna host in current channel")
   );
 
 module.exports.run = (client, interaction, options) => {
@@ -90,14 +90,14 @@ module.exports.run = (client, interaction, options) => {
       prize,
       hostedBy: interaction.user,
       thumbnail:
-        "https://media.discordapp.net/attachments/656517276832366595/1066346438092656730/1674307151525.png",
+        "https://media.discordapp.net/attachments/656517276832366595/1081550786749808640/1677932186933.png",
       messages: {
         giveaway:
-          "<:GiveawayEmoji:1066347988647161907> <:GiveawayEmoji:1066347988647161907> **GIVEAWAY** <:GiveawayEmoji:1066347988647161907> <:GiveawayEmoji:1066347988647161907>",
+          "<:Giveaway:1081537798424764476> <:Giveaway:1081537798424764476> **GIVEAWAY** <:Giveaway:1081537798424764476> <:Giveaway:1081537798424764476>",
         giveawayEnded:
-          "<:GiveawayEmoji:1066347988647161907> <:GiveawayEmoji:1066347988647161907> **GIVEAWAY ENDED** <:GiveawayEmoji:1066347988647161907> <:GiveawayEmoji:1066347988647161907>",
+          "<:Giveaway:1081537798424764476> <:Giveaway:1081537798424764476> **GIVEAWAY ENDED** <:Giveaway:1081537798424764476> <:Giveaway:1081537798424764476>",
         inviteToParticipate:
-          "React <:GiveawayEmoji:1066347988647161907> to participate!",
+          "React <:Giveaway:1081537798424764476> to participate!",
         winMessage: {
           content: `Congratulations, {winners}! You won **{this.prize}**!`,
           replyToGiveaway: true,
@@ -109,6 +109,9 @@ module.exports.run = (client, interaction, options) => {
       },
     })
     .then(() => {
+      if (channel == interaction.channel) {
+        return interaction.deleteReply().catch(console.error);
+      }
       interaction.editReply({
         embeds: [successEmbed(`Successfully hosted Giveaway in ${channel}`)],
       });

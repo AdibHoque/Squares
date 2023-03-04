@@ -6,14 +6,14 @@ const {
 
 function errorEmbed(text) {
   const embed = new EmbedBuilder()
-    .setDescription("<:Cross:1063031834713264128> " + text)
+    .setDescription("<:Cross:1081542318462599168> " + text)
     .setColor("#F3BA2F");
   return embed;
 }
 
 function successEmbed(text) {
   const embed = new EmbedBuilder()
-    .setDescription("<:Check:1063031741482291220> " + text)
+    .setDescription("<:Check:1081542275680698499> " + text)
     .setColor("#F3BA2F");
   return embed;
 }
