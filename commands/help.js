@@ -47,7 +47,7 @@ module.exports.run = (client, interaction, options) => {
     return interaction.editReply({
       embeds: [
         new EmbedBuilder()
-          .setTitle("Command Help")
+          .setTitle(`<:Squares:1080890146766991460> COMMAND INFO`)
           .addFields([
             {
               name: `<:Name:1066716238216187975> Name:`,
@@ -81,13 +81,9 @@ module.exports.run = (client, interaction, options) => {
   }
 
   const embed = new EmbedBuilder()
-    .setAuthor({ name: "SQUARES" })
-    .setTitle(`<:Commands:1066347425465380924> HELP MENU`)
+    .setTitle(`<:Squares:1080890146766991460> HELP MENU`)
     .setDescription(
       `To get detailed help on a command, use \`/help <command name>\`!`
-    )
-    .setThumbnail(
-      "https://cdn.discordapp.com/attachments/678539559570767872/1063130454930239489/20230112_222006.gif"
     )
     .addFields([
       {
