@@ -139,22 +139,26 @@ module.exports.run = async (client, interaction, options) => {
     embeds: [new EmbedBuilder().setDescription(boardsim)],
   });
 
-  const whitename = pgnJSON[0]["headers"].find((h) => h.name == "White").value;
-  const blackname = pgnJSON[0]["headers"].find((h) => h.name == "Black").value;
-  const whiteelo = pgnJSON[0]["headers"].find(
-    (h) => h.name == "WhiteElo"
-  ).value;
-  const blackelo = pgnJSON[0]["headers"].find(
-    (h) => h.name == "BlackElo"
-  ).value;
-  const endmessage = pgnJSON[0]["headers"].find(
-    (h) => h.name == "Termination"
-  ).value;
+  const whitename = pgnJSON[0]["headers"].find((h) => h.name == "White")
+    ? pgnJSON[0]["headers"].find((h) => h.name == "White").value
+    : false;
+  const blackname = pgnJSON[0]["headers"].find((h) => h.name == "Black")
+    ? pgnJSON[0]["headers"].find((h) => h.name == "Black").value
+    : false;
+  const whiteelo = pgnJSON[0]["headers"].find((h) => h.name == "WhiteElo")
+    ? pgnJSON[0]["headers"].find((h) => h.name == "WhiteElo").value
+    : false;
+  const blackelo = pgnJSON[0]["headers"].find((h) => h.name == "BlackElo")
+    ? pgnJSON[0]["headers"].find((h) => h.name == "BlackElo").value
+    : false;
+  const endmessage = pgnJSON[0]["headers"].find((h) => h.name == "Termination")
+    ? pgnJSON[0]["headers"].find((h) => h.name == "Termination").value
+    : "";
 
   pgnJSON[0]["moves"].forEach((m, i) => {
     const ended =
       pgnJSON[0]["moves"].indexOf(m) == pgnJSON[0]["moves"].length - 1
-        ? `**` + endmessage + `!**`
+        ? endmessage
         : false;
     const mo = m.move_number
       ? "White plays: `" + m.move + "`"
@@ -166,13 +170,18 @@ module.exports.run = async (client, interaction, options) => {
       const bo = chess.board().flat(1);
       const boardsim = simulateChessboard(bo, black);
       const boardtext =
-        `> <:WhiteKing:1076835914128564244>**White:** ${whitename} (${whiteelo})\n> <:BlackKing:1076835915256827947>**Black: **${blackname} (${blackelo})\n` +
-        moveorend;
+        `> <:WhiteKing:1076835914128564244>**White:** ${
+          whitename ? whitename : "Unnamed"
+        }${
+          whiteelo ? " (" + whiteelo + ")" : ""
+        }\n> <:BlackKing:1076835915256827947>**Black: **${
+          blackname ? blackname : "Unnamed"
+        }${blackelo ? " (" + blackelo + ")" : ""}\n` + moveorend;
       const board = boardsim;
 
       interaction.editReply({
         content: boardtext,
-        embeds: [new EmbedBuilder().setDescription(board)],
+        embeds: [new EmbedBuilder().setDescription(board).setColor("#7ca650")],
         components: [
           new ActionRowBuilder().addComponents([
             new ButtonBuilder()
@@ -194,7 +203,7 @@ module.exports.run = async (client, interaction, options) => {
   });
 
   collector.on("collect", (i) => {
+    if (!i.deferred) i.deferUpdate();
     black = black ? false : true;
-    i.deferUpdate();
   });
 };

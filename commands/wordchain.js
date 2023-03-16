@@ -96,12 +96,17 @@ async function start(
       { name: "Starting Letter:", value: startletter },
       { name: "Minimum Word Length:", value: "" + minletters },
       {
-        name: "Time Left:",
-        value: `${timeleft - Math.floor(Date.now() / 1000)} Seconds`,
+        name: "Time Ends:",
+        value: `<t:${timeleft}:R>`,
       },
     ])
+    .setThumbnail(
+      "https://raster.shields.io/badge/" +
+        startletter +
+        "-f3ba2f.png?style=for-the-badge"
+    )
     .setColor("#F3BA2F");
-  await interaction.followUp({
+  await interaction.channel.send({
     content: `<@${currentplayer}>`,
     embeds: [embed],
   });
@@ -296,9 +301,18 @@ async function start(
 
 module.exports.data = new SlashCommandBuilder()
   .setName("wordchain")
-  .setDescription("Play Wordchain Game!");
+  .setDescription("Play Wordchain Game!")
+  .addIntegerOption((option) =>
+    option
+      .setName("minimum-letters")
+      .setDescription("Default is 4 and Maximum is 11")
+  );
 
-module.exports.run = async (client, interaction) => {
+module.exports.run = async (client, interaction, options) => {
+  let ml = options.getInteger("minimum-letters");
+  if (ml && ml < 4) ml = 4;
+  if (ml && ml > 11) ml = 11;
+  minletters = ml ? ml : minletters;
   const wc = await db.get(`wc${interaction.channelId}`);
   if (wc && Date.now() - wc.lastUpdate < 35000) {
     const embed = new EmbedBuilder()
@@ -329,7 +343,10 @@ module.exports.run = async (client, interaction) => {
     )
     .addFields([
       { name: "How to join?", value: "Tap on the button below to join." },
-      { name: "Time left", value: "30 Seconds" },
+      {
+        name: "Game Starts",
+        value: `<t:${Math.floor(Date.now() / 1000) + 30}:R>`,
+      },
     ])
     .setColor("#F3BA2F");
   interaction.editReply({ embeds: [embed], components: [row] });
@@ -340,19 +357,19 @@ module.exports.run = async (client, interaction) => {
     filter,
     time: 30_000,
   });
-  collector.on("collect", (i) => {
-    i.deferUpdate();
+  collector.on("collect", async (i) => {
+    await i.deferUpdate();
     if (players.includes(i.user.id)) {
       const embed = new EmbedBuilder().setDescription(
         `<@${i.user.id}> You have already joined the game!`
       );
-      interaction.followUp({ embeds: [embed] });
+      await i.followUp({ embeds: [embed], ephemeral: true });
     }
     if (!players.includes(i.user.id) && !i.user.bot && players.length < 11) {
       players.push(i.user.id);
-      const embed = new EmbedBuilder().setDescription(
-        `<@${i.user.id}> has joined the game!`
-      );
+      const embed = new EmbedBuilder()
+        .setDescription(`<@${i.user.id}> has joined the game!`)
+        .setColor("#FEBA2F");
       const row = new ActionRowBuilder().addComponents([
         new ButtonBuilder()
           .setLabel("Lemme join too!")
